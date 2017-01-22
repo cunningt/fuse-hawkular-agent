@@ -2,9 +2,14 @@
 
 ### Steps for setting up Fuse-EAP :
 
-1) Unzip EAP : [http://porkchop.redhat.com/released/JBEAP-6/6.4.12/](http://porkchop.redhat.com/released/JBEAP-6/6.4.12/) (choose the -full-build.zip version)
+1) Unzip EAP :
+<br/>
+[http://porkchop.redhat.com/released/JBEAP-6/6.4.12/](http://porkchop.redhat.com/released/JBEAP-6/6.4.12/) (choose the -full-build.zip version)
+<br/>
 2) Download Fuse EAP installer : 
+<br/>
 [http://porkchop.redhat.com/released/JBossFuse/6.3.0/fuse-eap-installer-6.3.0.redhat-187.jar](fuse-eap-installer)
+<br/>
 3) cd to the `${EAP_HOME}` directory and :
 ```
 java -jar fuse-eap-installer-6.3.0.redhat-187.jar
@@ -18,16 +23,21 @@ java -jar fuse-eap-installer-6.3.0.redhat-187.jar
 ./standalone.sh -Djboss.socket.binding.port-offset=100
 ```
 (It's important to use the port-offset so we don't conflict with the hawkular server)
+<br/>
 7) If everything is set up correctly, you should be able to browse to [http://localhost:8180/hawtio/](http://localhost:8180/hawtio/) and log in using the management user you created
+<br/>
 8) Install the example-camel-cdi-2.4.0.redhat-630187.war quickstart into `${EAP_HOME}/standalone/deployments`:
 <br/>
 [http://origin-repository.jboss.org/nexus/content/groups/ea/org/wildfly/camel/example-camel-cdi/2.4.0.redhat-630189/example-camel-cdi-2.4.0.redhat-630189.war](example-camel-cdi-2.4.0.redhat-630189.war)
+<br/>
 9) Browse to [http://localhost:8180/example-camel-cdi/?name=Kermit](http://localhost:8180/example-camel-cdi/?name=Kermit) so that we Camel exchanges now have a message count.
 
 ### Set up Hawkular 
 
 1) Build [https://github.com/hawkular/hawkular-services](https://github.com/hawkular/hawkular-services) master branch and use the the distribution there (need Jolokia support).
+<br/>
 2) Run through the steps here [http://www.hawkular.org/hawkular-services/docs/installation-guide/](http://www.hawkular.org/hawkular-services/docs/installation-guide/), and enable the wildfly agent
+<br/>
 3) Add the following to the `standalone.xml` config - see to `<managed-servers>` :
 ```
                 <remote-jmx name="My Remote JMX"
