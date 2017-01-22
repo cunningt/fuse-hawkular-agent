@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--
+
+    Copyright 2015-2016 Red Hat, Inc. and/or its affiliates
+    and other contributors as indicated by the @author tags.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<subsystem xmlns="urn:org.hawkular.agent:agent:1.0"
+           enabled="false"
+           auto-discovery-scan-period-secs="3601"
+           metric-dispatcher-buffer-size="201"
+           metric-dispatcher-max-batch-size="51"
+           avail-dispatcher-buffer-size="101"
+           avail-dispatcher-max-batch-size="26"
+           ping-period-secs="31">
+
+  <diagnostics enabled="false"
+               interval="1"
+               time-units="minutes"/>
+
+  <storage-adapter username="jdoe"
+                   password="password"
+                   url="http://localhost:8080"
+                   security-realm="HawkularSecurityRealm"/>
+
+  <metric-set-jmx name="CamelProcessorMetrics">
+    <metric-jmx name="Exchanges Completed" metric-type="counter" interval="30" time-units="seconds" attribute="ExchangesCompleted"/>
+    <metric-jmx name="Exchanges Failed" metric-type="counter" interval="30" time-units="seconds" attribute="ExchangesFailed"/>
+    <metric-jmx name="Exchanges Total" metric-type="counter" interval="30" time-units="seconds" attribute="ExchangesTotal"/>
+    <metric-jmx name="Minimum Processing Time" metric-type="gauge" interval="30" time-units="seconds" attribute="MinProcessingTime"/>
+    <metric-jmx name="Mean Processing Time" metric-type="gauge" interval="30" time-units="seconds" attribute="MaxProcessingTime"/>
+    <metric-jmx name="Maximum Processing Time" metric-type="gauge" interval="30" time-units="seconds" attribute="MeanProcessingTime"/>
+    <metric-jmx name="Total Processing Time" metric-type="gauge" interval="30" time-units="seconds" attribute="TotalProcessingTime"/>
+    <metric-jmx name="Last Processing Time" metric-type="gauge" interval="30" time-units="seconds" attribute="LastProcessingTime"/>
+  </metric-set-jmx>
+
+  <metric-set-jmx name="CamelRouteMetrics">
+    <metric-jmx name="Inflight Exchanges" metric-type="counter" interval="30" time-units="seconds" attribute="InflightExchanges"/>
+    <metric-jmx name="Oldest Inflight Exchange Duration" metric-type="gauge" interval="30" time-units="seconds" attribute="OldestInflightExchangeDuration"/>
+  </metric-set-jmx>
+  <metric-set-jmx name="MemoryPoolMetricsJMX">
+      <metric-jmx name="Initial" metric-units="bytes" interval="120" time-units="seconds" attribute="Usage#init"/>
+      <metric-jmx name="Used" metric-units="bytes" interval="60" time-units="seconds" attribute="Usage#used"/>
+      <metric-jmx name="Committed" metric-units="bytes" interval="60" time-units="seconds" attribute="Usage#committed"/>
+      <metric-jmx name="Max" metric-units="bytes" interval="120" time-units="seconds" attribute="Usage#max"/>
+  </metric-set-jmx>
+  <metric-set-jmx name="RuntimeMetricsJMX">
+      <metric-jmx name="VM Uptime" metric-units="milliseconds" interval="30" time-units="seconds" attribute="Uptime"/>
+      <metric-jmx name="Used Heap Memory" metric-units="bytes" interval="30" time-units="seconds" attribute="HeapMemoryUsage#used" object-name="java.lang:type=Memory"/>
+      <metric-jmx name="Aggregate GC Collection Time" metric-units="milliseconds" interval="30" time-units="seconds" attribute="CollectionTime" object-name="java.lang:type=GarbageCollector,name=*"/>
+  </metric-set-jmx>
+  
+  <resource-type-set-jmx name="MainJMX">
+      <resource-type-jmx name="Runtime MBean" avail-sets="RuntimeAvailsJMX" metric-sets="RuntimeMetricsJMX" object-name="java.lang:type=Runtime" resource-name-template="JMX [%_ManagedServerName%][%type%]">
+          <resource-config-jmx name="OS Name" attribute="Name" object-name="java.lang:type=OperatingSystem"/>
+          <resource-config-jmx name="Java VM Name" attribute="VmName"/>
+      </resource-type-jmx>
+  </resource-type-set-jmx>
+  <resource-type-set-jmx name="Camel">
+      <resource-type-jmx name="Camel Context" metric-sets="CamelProcessorMetrics" parents="Runtime MBean"
+      object-name="org.apache.camel:type=context,name=*,context=*"
+      resource-name-template="Camel Context %name%"/>
+  </resource-type-set-jmx>
+  <resource-type-set-jmx name="CamelProcessor" >
+      <resource-type-jmx name="Camel Processor" metric-sets="CamelProcessorMetrics" parents="Camel Context"
+      object-name="org.apache.camel:type=processors,name=*,context=*"
+      resource-name-template="Camel Processor %name%"/>
+  </resource-type-set-jmx>
+  <resource-type-set-jmx name="MemoryPoolJMX">
+      <resource-type-jmx name="Memory Pool MBean" avail-sets="MemoryPoolAvailsJMX" metric-sets="MemoryPoolMetricsJMX" parents="Runtime MBean" object-name="java.lang:type=MemoryPool,name=*" resource-name-template="JMX [%_ManagedServerName%] %type% %name%">
+          <resource-config-jmx name="Type" attribute="Type"/>
+      </resource-type-jmx>
+  </resource-type-set-jmx>
+  
+  <managed-servers>
+      <remote-jmx name="My Remote JMX"
+      enabled="true"
+      resource-type-sets="MainJMX,MemoryPoolJMX,Camel,CamelProcessor"
+      metric-tags="server=%ManagedServerName,host=127.0.0.5"
+      metric-id-template="%ResourceName_%MetricTypeName"
+      username="admin"
+      password="admin"
+      url="http://localhost:8181/hawtio/jolokia"/>
+  </managed-servers>
+</subsystem>
