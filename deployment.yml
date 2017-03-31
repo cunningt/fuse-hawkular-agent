@@ -1,0 +1,11 @@
+spec:
+    replicas: 1
+    template:
+        spec:
+            containers:
+                - name: config
+                  env:
+                      - name: JAVA_OPTIONS
+                        value: -javaagent:/deployments/hawkular-javaagent-0.28.2.Final-SNAPSHOT.jar=config=/deployments/simple.yaml,delay=45
+                      - name: JAVA_APP_JAR
+                        value: <YOUR-JAR_NAME> 

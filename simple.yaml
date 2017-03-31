@@ -1,0 +1,686 @@
+#
+# Copyright 2015-2017 Red Hat, Inc. and/or its affiliates
+# and other contributors as indicated by the @author tags.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+---
+subsystem:
+  enabled:                         true
+  auto-discovery-scan-period-secs: 600
+  min-collection-interval-secs: 30
+
+diagnostics:
+   enabled:    true
+   report-to:  STORAGE
+   interval:   1
+   time-units: minutes
+
+storage-adapter:
+  type:                 HAWKULAR
+  tenant-id:            hawkular
+  url:                  http://192.168.1.3:8080
+  username:             admin
+  password:             admin
+  feed-id:              autogenerate
+
+metric-set-jmx:
+- name: CamelProcessorMetrics 
+  enabled: true
+  metric-jmx:
+  - name: Exchanges Completed
+    interval: 30
+    time-units: seconds
+    metric-type: counter 
+    attribute: ExchangesCompleted 
+  - name: Exchanges Failed 
+    interval: 30
+    time-units: seconds
+    metric-type: counter
+    attribute: ExchangesFailed 
+  - name: Exchanges Total
+    interval: 30
+    time-units: seconds
+    metric-type: counter
+    attribute: ExchangesTotal
+  - name: Minimum Processing Time
+    interval: 30
+    time-units: seconds
+    metric-type: counter
+    attribute: MinProcessingTime
+  - name: Mean Processing Time
+    interval: 30
+    time-units: seconds
+    metric-type: gauge
+    attribute: MeanProcessingTime
+  - name: Maximum Processing Time
+    interval: 30
+    time-units: seconds
+    metric-type: gauge
+    attribute: MaxProcessingTime
+  - name: Total Processing Time
+    interval: 30
+    time-units: seconds    
+    metric-type: gauge
+    attribute: TotalProcessingTime
+  - name: Last Processing Time
+    interval: 30
+    time-units: seconds
+    metric-type: gauge
+    attribute: LastProcessingTime
+- name: CamelRouteMetrics
+  enabled: true
+  metric-jmx: 
+  - name: Inflight Exchanges
+    interval: 30
+    time-units: seconds
+    metric-type: counter
+    attribute: InflightExchanges
+#  - name: Oldest Inflight Exchange Duration
+#    interval: 30
+#    time-units: seconds
+#    metric-type: counter
+#    attribute: OldestInflightExchangeDuration
+
+# resource-type-set-jmx:
+# - name: CamelServices
+#   enabled: true
+#   resource-type-jmx:
+#   - name: Camel Services
+#     object-name: "org.apache.camel:context=*,name=*,type=services"
+#     resource-name-template: "Service %name%"
+#     parents:
+#     - Camel Context
+#     resource-config-jmx:
+#         - name: CamelId
+#           attribute: CamelId
+#         - name: CamelManagementName
+#           attribute: CamelManagementName
+#         - name: DynamicSize
+#           attribute: DynamicSize
+#         - name: MaximumCacheSize
+#           attribute: MaximumCacheSize
+#         - name: Route
+#           attribute: Route
+#         - name: ServiceType
+#           attribute: ServiceType
+#         - name: Size
+#           attribute: Size
+#         - name: Source
+#           attribute: Source
+#         - name: State
+#           attribute: State
+#         - name: StaticService
+#           attribute: StaticService
+#         - name: StaticSize
+#           attribute: StaticSize
+#         - name: SupportSuspension
+#           attribute: SupportSuspension
+#         - name: Suspended
+#           attribute: Suspended
+#
+# resource-type-set-jmx:
+# - name: CamelComponents
+#   enabled: true
+#   resource-type-jmx:
+#   - name: Camel Components
+#     object-name: "org.apache.camel:context=*,name=*,type=components"
+#     parents:
+#     - Camel Context
+#     resource-name-template: "Component %name%"
+#     resource-config-jmx:
+#         - name: CamelId
+#           attribute: CamelId
+#         - name: ManagementName
+#           attribute: ManagementName
+#         - name: ComponentName
+#           attribute: ComponentName
+#         - name : State
+#           attribute: State
+#
+# resource-type-set-jmx:
+# - name: CamelConsumers
+#   enabled: true
+#   resource-type-jmx:
+#   - name: Camel Consumers
+#     object-name: "org.apache.camel:context=*,name=*,type=consumers"
+#     metric-sets:
+#     - CamelRouteMetrics
+#     resource-name-template: "Consumer %name%"
+#     resource-config-jmx:
+#         - name: CamelId
+#           attribute: CamelId
+#         - name: ManagementName
+#           attribute: ManagementName
+#         - name: RouteId
+#           attribute: RouteId
+#         - name: ServiceType
+#           attribute: ServiceType
+#         - name: State
+#           attribute: State
+#         - name: StaticService
+#           attribute: StaticService
+#         - name: SupportSuspension
+#           attribute: SupportSuspension
+#         - name: Suspended
+#           attribute: Suspended
+#
+# resource-type-set-jmx:
+# - name: CamelEndpoints
+#   enabled: true
+#   resource-type-jmx:
+#   - name: Camel Endpoints
+#     object-name: "org.apache.camel:context=*,name=*,type=endpoints"
+#     resource-name-template: "Endpoint %name%"
+#     parents:
+#     - Camel Context
+#     resource-config-jmx:
+#         - name: CamelId
+#           attribute: CamelId
+#         - name: ManagementName
+#           attribute: ManagementName
+#         - name: EndpointUri
+#           attribute: EndpointUri
+#         - name: Singleton
+#           attribute: Singleton
+#         - name: State
+#           attribute: State
+#
+# resource-type-set-jmx:
+# - name: CamelTracer
+#   enabled: true
+#   resource-type-jmx:
+#   - name: Camel Tracer
+#     object-name: "org.apache.camel:context=*,name=*,type=tracer"
+#     resource-name-template: "Tracer %name%"
+#     parents:
+#     - Camel Context
+#     resource-config-jmx:
+#         - name: BacklogSize
+#           attribute: BacklogSize
+#         - name: BodyIncludeFiles
+#           attribute: BodyIncludeFiles
+#         - name: BodyIncludeStreams
+#           attribute: BodyIncludeStreams
+#         - name: BodyMaxChars
+#           attribute: BodyMaxChars
+#         - name: CamelId
+#           attribute: CamelId
+#         - name: CamelManagementName
+#           attribute: CamelManagementName
+#         - name: Enabled
+#           attribute: Enabled
+#         - name: FallbackTimeout
+#           attribute: FallbackTimeout
+#         - name: LoggingLevel
+#           attribute: LoggingLevel
+#         - name: RemoveOnDump
+#           attribute: RemoveOnDump
+#         - name: SingleStepMode
+#           attribute: SingleStepMode
+#         - name: TraceCounter
+#           attribute: TraceCounter
+#         - name: TraceFilter
+#           attribute: TraceFilter
+#         - name: TracePattern
+#           attribute: TracePattern
+#
+# resource-type-set-jmx:
+# - name: CamelErrorHandlers
+#   enabled: true
+#   resource-type-jmx:
+#   - name: Camel Error Handlers
+#     object-name: "org.apache.camel:context=*,name=*,type=errorhandlers"
+#     resource-name-template: "Endpoint %name%"
+#     parents:
+#     - Camel Context
+#     resource-config-jmx:
+#         - name: AllowRedeliveryWhileStopping
+#           attribute: AllowRedeliveryWhileStopping
+#         - name: BackOffMultiplier
+#           attribute: BackOffMultiplier
+#         - name: CamelId
+#           attribute: CamelId
+#         - name: ManagementName
+#           attribute: ManagementName
+#         - name: CollisionAvoidanceFactor
+#           attribute: CollisionAvoidanceFactor
+#         - name: CollisionAvoidancePercent
+#           attribute: CollisionAvoidancePercent
+#         - name: DeadLetterChannel
+#           attribute: DeadLetterChannel
+#         - name: DeadLetterChannelEndpointUri
+#           attribute: DeadLetterChannelEndpointUri
+#         - name: DeadLetterHandleNewException
+#           attribute: DeadLetterHandleNewException
+#         - name: DeadLetterUseOriginalMessage
+#           attribute: DeadLetterUseOriginalMessage
+#         - name: DelayPattern
+#           attribute: DelayPattern
+#         - name: LogContinued
+#           attribute: LogContinued
+#         - name: LogExhausted
+#           attribute: LogExhausted
+#         - name: LogExhaustedMessageBody
+#           attribute: LogExhaustedMessageBody
+#         - name: LogExhaustedMessageHistory
+#           attribute: LogExhaustedMessageHistory
+#         - name: LogHandled
+#           attribute: LogHandled
+#         - name: LogNewException
+#           attribute: LogNewException
+#         - name: LogRetryStackTrace
+#           attribute: LogRetryStackTrace
+#         - name: LogStackTrace
+#           attribute: LogStackTrace
+#         - name: MaximumRedeliveries
+#           attribute: MaximumRedeliveries
+#         - name: MaximumRedeliveryDelay
+#           attribute: MaximumRedeliveryDelay
+#         - name: PendingRedeliveryCount
+#           attribute: PendingRedeliveryCount
+#         - name: RedeliveryDelay
+#           attribute: RedeliveryDelay
+#         - name: RetriesExhaustedLogLevel
+#           attribute: RetriesExhaustedLogLevel
+#         - name: RetryAttemptedLogLevel
+#           attribute: RetryAttemptedLogLevel
+#         - name: SupportRedelivery
+#           attribute: SupportRedelivery
+#         - name: SupportTransactions
+#           attribute: SupportTransactions
+#         - name: UseCollisionAvoidance
+#           attribute: UseCollisionAvoidance
+#         - name: UseExponentialBackOff
+#           attribute: UseExponentialBackOff
+#
+# resource-type-set-jmx:
+# - name: CamelEventNotifiers
+#   enabled: true
+#   resource-type-jmx:
+#   - name: Camel Event Notifiers
+#     object-name: "org.apache.camel:context=*,name=*,type=eventnotifiers"
+#     resource-name-template: "Endpoint %name%"
+#     parents:
+#     - Camel Context
+#     resource-config-jmx:
+#         - name: IgnoreCamelContextEvents
+#           attribute: IgnoreCamelContextEvents
+#         - name: IgnoreExchangeCompletedEvent
+#           attribute: IgnoreExchangeCompletedEvent
+#         - name: IgnoreExchangeCreatedEvent
+#           attribute: IgnoreExchangeCreatedEvent
+#         - name: IgnoreExchangeEvents
+#           attribute: IgnoreExchangeEvents
+#         - name: IgnoreExchangeFailedEvents
+#           attribute: IgnoreExchangeFailedEvents
+#         - name: IgnoreExchangeRedeliveryEvents
+#           attribute: IgnoreExchangeRedeliveryEvents
+#         - name: IgnoreExchangeSendingEvents
+#           attribute: IgnoreExchangeSendingEvents
+#         - name: IgnoreExchangeSentEvents
+#           attribute: IgnoreExchangeSentEvents
+#         - name: IgnoreRouteEvents
+#           attribute: IgnoreRouteEvents
+#         - name: IgnoreServiceEvents
+#           attribute: IgnoreServiceEvents
+    
+# resource-type-set-jmx:
+# - name: CamelProcessor
+#   enabled: true
+#   resource-type-jmx:
+#   - name: Camel Processor
+#     resource-name-template: "Camel Processor %name%"
+#     object-name: "org.apache.camel:type=processors,name=*,context=*"
+#     parents:
+#     - Camel Context
+#     metric-sets:
+#     - CamelProcessorMetrics
+
+# resource-type-set-jmx:
+# - name: Camel
+#   enabled: true
+#   resource-type-jmx:
+#   - name: Camel Context
+#     resource-name-template: "Camel Context %name%"
+#     object-name: org.apache.camel:type=context,name=*,context=*
+#     parents:
+#     - Runtime MBean
+#     metric-sets:
+#     - CamelProcessorMetrics
+
+# resource-type-set-jmx:
+# - name: FuseJMX
+#   enabled: true
+#   resource-type-jmx:
+#   - name: Fuse MBean
+#     resource-name-template: "Fuse Server [%type%]"
+#     object-name: org.apache.camel:type=context,name=*,context=*
+#     # parents:
+#     # - Runtime MBean
+#     metric-sets:
+#     - CamelProcessorMetrics
+
+resource-type-set-jmx:
+- name: MainJMX
+  enabled: true
+  resource-type-jmx:
+  - name: Runtime MBean
+    resource-name-template: "JMX [%_ManagedServerName%][%type%]"
+    object-name: java.lang:type=Runtime
+    resource-config-jmx:
+    - name: OS Name
+      attribute: Name
+      object-name: java.lang:type=OperatingSystem
+    - name: Java VM Name
+      attribute: VmName
+- name: Camel
+  enabled: true
+  resource-type-jmx:
+  - name: Camel Context
+    parents:
+    - Runtime MBean
+    resource-name-template: "Camel Context %name%"
+    object-name: org.apache.camel:type=context,name=*,context=*
+    metric-sets:
+    - CamelProcessorMetrics
+- name: CamelProcessor
+  enabled: true
+  resource-type-jmx:
+  - name: Camel Processor
+    resource-name-template: "Camel Processor %name%"
+    object-name: "org.apache.camel:type=processors,name=*,context=*"
+    parents:
+    - Camel Context
+    metric-sets:
+    - CamelProcessorMetrics
+- name: CamelEventNotifiers
+  enabled: true
+  resource-type-jmx:
+  - name: Camel Event Notifiers
+    object-name: "org.apache.camel:context=*,name=*,type=eventnotifiers"
+    resource-name-template: "Endpoint %name%"
+    parents:
+    - Camel Context
+    resource-config-jmx:
+        - name: IgnoreCamelContextEvents
+          attribute: IgnoreCamelContextEvents
+        - name: IgnoreExchangeCompletedEvent
+          attribute: IgnoreExchangeCompletedEvent
+        - name: IgnoreExchangeCreatedEvent
+          attribute: IgnoreExchangeCreatedEvent
+        - name: IgnoreExchangeEvents
+          attribute: IgnoreExchangeEvents
+        - name: IgnoreExchangeFailedEvents
+          attribute: IgnoreExchangeFailedEvents
+        - name: IgnoreExchangeRedeliveryEvents
+          attribute: IgnoreExchangeRedeliveryEvents
+        - name: IgnoreExchangeSendingEvents
+          attribute: IgnoreExchangeSendingEvents
+        - name: IgnoreExchangeSentEvents
+          attribute: IgnoreExchangeSentEvents
+        - name: IgnoreRouteEvents
+          attribute: IgnoreRouteEvents
+        - name: IgnoreServiceEvents
+          attribute: IgnoreServiceEvents
+- name: CamelErrorHandlers
+  enabled: true
+  resource-type-jmx:
+  - name: Camel Error Handlers
+    object-name: "org.apache.camel:context=*,name=*,type=errorhandlers"
+    resource-name-template: "Endpoint %name%"
+    parents:
+    - Camel Context
+    resource-config-jmx:
+        - name: AllowRedeliveryWhileStopping
+          attribute: AllowRedeliveryWhileStopping
+        - name: BackOffMultiplier
+          attribute: BackOffMultiplier
+        - name: CamelId
+          attribute: CamelId
+        - name: ManagementName
+          attribute: ManagementName
+        - name: CollisionAvoidanceFactor
+          attribute: CollisionAvoidanceFactor
+        - name: CollisionAvoidancePercent
+          attribute: CollisionAvoidancePercent
+        - name: DeadLetterChannel
+          attribute: DeadLetterChannel
+        - name: DeadLetterChannelEndpointUri
+          attribute: DeadLetterChannelEndpointUri
+        - name: DeadLetterHandleNewException
+          attribute: DeadLetterHandleNewException
+        - name: DeadLetterUseOriginalMessage
+          attribute: DeadLetterUseOriginalMessage
+        - name: DelayPattern
+          attribute: DelayPattern
+        - name: LogContinued
+          attribute: LogContinued
+        - name: LogExhausted
+          attribute: LogExhausted
+        - name: LogExhaustedMessageBody
+          attribute: LogExhaustedMessageBody
+        - name: LogExhaustedMessageHistory
+          attribute: LogExhaustedMessageHistory
+        - name: LogHandled
+          attribute: LogHandled
+        - name: LogNewException
+          attribute: LogNewException
+        - name: LogRetryStackTrace
+          attribute: LogRetryStackTrace
+        - name: LogStackTrace
+          attribute: LogStackTrace
+        - name: MaximumRedeliveries
+          attribute: MaximumRedeliveries
+        - name: MaximumRedeliveryDelay
+          attribute: MaximumRedeliveryDelay
+        - name: PendingRedeliveryCount
+          attribute: PendingRedeliveryCount
+        - name: RedeliveryDelay
+          attribute: RedeliveryDelay
+        - name: RetriesExhaustedLogLevel
+          attribute: RetriesExhaustedLogLevel
+        - name: RetryAttemptedLogLevel
+          attribute: RetryAttemptedLogLevel
+        - name: SupportRedelivery
+          attribute: SupportRedelivery
+        - name: SupportTransactions
+          attribute: SupportTransactions
+        - name: UseCollisionAvoidance
+          attribute: UseCollisionAvoidance
+        - name: UseExponentialBackOff
+          attribute: UseExponentialBackOff
+- name: CamelTracer
+  enabled: true
+  resource-type-jmx:
+  - name: Camel Tracer
+    object-name: "org.apache.camel:context=*,name=*,type=tracer"
+    resource-name-template: "Tracer %name%"
+    parents:
+    - Camel Context
+    resource-config-jmx:
+        - name: BacklogSize
+          attribute: BacklogSize
+        - name: BodyIncludeFiles
+          attribute: BodyIncludeFiles
+        - name: BodyIncludeStreams
+          attribute: BodyIncludeStreams
+        - name: BodyMaxChars
+          attribute: BodyMaxChars
+        - name: CamelId
+          attribute: CamelId
+        - name: CamelManagementName
+          attribute: CamelManagementName
+        - name: Enabled
+          attribute: Enabled
+        - name: FallbackTimeout
+          attribute: FallbackTimeout
+        - name: LoggingLevel
+          attribute: LoggingLevel
+        - name: RemoveOnDump
+          attribute: RemoveOnDump
+        - name: SingleStepMode
+          attribute: SingleStepMode
+        - name: TraceCounter
+          attribute: TraceCounter
+        - name: TraceFilter
+          attribute: TraceFilter
+        - name: TracePattern
+          attribute: TracePattern
+- name: CamelEndpoints
+  enabled: true
+  resource-type-jmx:
+  - name: Camel Endpoints
+    object-name: "org.apache.camel:context=*,name=*,type=endpoints"
+    resource-name-template: "Endpoint %name%"
+    parents:
+    - Camel Context
+    resource-config-jmx:
+    - name: CamelId
+      attribute: CamelId
+    - name: ManagementName
+      attribute: ManagementName
+    - name: EndpointUri
+      attribute: EndpointUri
+    - name: Singleton
+      attribute: Singleton
+    - name: State
+      attribute: State
+- name: CamelServices
+  enabled: true
+  resource-type-jmx:
+  - name: Camel Services
+    object-name: "org.apache.camel:context=*,name=*,type=services"
+    resource-name-template: "Service %name%"
+    parents:
+    - Camel Context
+    resource-config-jmx:
+        - name: CamelId
+          attribute: CamelId
+        - name: CamelManagementName
+          attribute: CamelManagementName
+        - name: DynamicSize
+          attribute: DynamicSize
+        - name: MaximumCacheSize
+          attribute: MaximumCacheSize
+        - name: Route
+          attribute: Route
+        - name: ServiceType
+          attribute: ServiceType
+        - name: Size
+          attribute: Size
+        - name: Source
+          attribute: Source
+        - name: State
+          attribute: State
+        - name: StaticService
+          attribute: StaticService
+        - name: StaticSize
+          attribute: StaticSize
+        - name: SupportSuspension
+          attribute: SupportSuspension
+        - name: Suspended
+          attribute: Suspended
+- name: CamelComponents
+  enabled: true
+  resource-type-jmx:
+  - name: Camel Components
+    object-name: "org.apache.camel:context=*,name=*,type=components"
+    parents:
+    - Camel Context
+    resource-name-template: "Component %name%"
+    resource-config-jmx:
+        - name: CamelId
+          attribute: CamelId
+        - name: ManagementName
+          attribute: ManagementName
+        - name: ComponentName
+          attribute: ComponentName
+        - name : State
+          attribute: State
+- name: CamelConsumers
+  enabled: true
+  resource-type-jmx:
+  - name: Camel Consumers
+    object-name: "org.apache.camel:context=*,name=*,type=consumers"
+    parents:
+    - Camel Context
+    metric-sets:
+    - CamelRouteMetrics
+    resource-name-template: "Consumer %name%"
+    resource-config-jmx:
+        - name: CamelId
+          attribute: CamelId
+        - name: ManagementName
+          attribute: ManagementName
+        - name: RouteId
+          attribute: RouteId
+        - name: ServiceType
+          attribute: ServiceType
+        - name: State
+          attribute: State
+        - name: StaticService
+          attribute: StaticService
+        - name: SupportSuspension
+          attribute: SupportSuspension
+        - name: Suspended
+          attribute: Suspended
+          
+          
+managed-servers:
+  local-jmx:
+    name: Local JMX
+    enabled: true
+    resource-type-sets:
+    - MainJMX
+    - Camel
+    - CamelProcessor
+    - CamelEventNotifiers
+    - CamelErrorHandlers
+    - CamelTracer
+    - CamelEndpoints
+    - CamelServices
+    - CamelComponents
+    - CamelConsumers
+    metric-id-template: jmx local feed id is %FeedId and metric name is %MetricName
+    metric-tags:
+      localjmxtag1: val1
+      jmxtag2: val2
+    set-avail-on-shutdown: UNKNOWN
+
+platform:
+  enabled:      true
+  interval:     1234
+  time-units:   seconds
+  machine-id:   my-machine-id-here
+
+  file-stores:
+    enabled:    true
+    interval:   5000
+    time-units: milliseconds
+
+  memory:
+    enabled:    true
+    interval:   30
+    time-units: seconds
+
+  processors:
+    enabled:    true
+    interval:   1
+    time-units: minutes
+
+  power-sources:
+    enabled:    false
+    interval:   5
+    time-units: minutes
