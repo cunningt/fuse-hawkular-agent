@@ -82,4 +82,12 @@ grafana-cli plugins install hawkular-datasource
 
 ## Configure a Data Source
 
+Once the Grafana plugin is installed, go ahead and add a new datasource by choosing "Data Sources" from the drop down.   Fill out the details of your Hawkular installation.   Add the authorization credentials and tenant settings that match your Hawkular configuration file, and then Save & Test to make sure that your data source configuration works.
+
 ![Image of Grafana Data Source Configuration](https://github.com/cunningt/fuse-hawkular-agent/blob/master/hawkular-grafana.png?raw=true)
+
+## Graph Metrics
+
+Choose Dashboards from the main drop down, and create a new dashboard.  Choose Graph, click on the Panel title, and select edit.
+
+For "Panel Data Source", select Hawkular.   Once you select the data source, you should be able to choose metrics to graph by selecting either Gauges or Counters, and then specifying the metric to graph in the "select metric" drop down box.   The metric names are a combination of the Hawkular Server name, the Camel Context name, and then the metric itself (Processor, etc) so that they are unique.    While the metric names are unwieldy, you can make your graph more readable by changing the graph settings to give better names.
