@@ -2,7 +2,7 @@
 
 This document details the steps necessary to configure and run Fuse with the Hawkular java agent.
 
-#SpringBoot in FIS
+# SpringBoot in FIS
 
 - Add the following sections to your application's pom.xml :
 
@@ -71,3 +71,15 @@ This document details the steps necessary to configure and run Fuse with the Haw
 ``
     -javaagent:<PATH-TO-HAWKULAR-JAR>/hawkular-javaagent-0.29.4.Final-SNAPSHOT.jar=config=simple.yaml"
 ``
+
+# Using Grafana to display results
+
+After installing Grafana on a machine (http://www.hawkular.org/hawkular-clients/grafana/docs/quickstart-guide/) provides a number of good starting points, install the Hawkular Plugin for Grafana using the grafana-cli :
+
+```
+grafana-cli plugins install hawkular-datasource
+```
+
+## Configure a Data Source
+
+![Image of Grafana Data Source Configuration](https://github.com/cunningt/fuse-hawkular-agent/blob/master/hawkular-grafana.png?raw=true)
