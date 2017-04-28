@@ -1,8 +1,8 @@
-= Using the Hawkular Java Agent with Fuse
+# Using the Hawkular Java Agent with Fuse
 
 This document details the steps necessary to configure and run Fuse with the Hawkular java agent.
 
-= SpringBoot in FIS
+#SpringBoot in FIS
 
 - Add the following sections to your application's pom.xml :
 
@@ -60,7 +60,7 @@ This document details the steps necessary to configure and run Fuse with the Haw
 - Edit deployment.yml and replace <YOUR-JAR_NAME> with the finalName of your JAR.  Copy deployment.yml to src/main/fabric8.
 
 
-= Attaching the agent to Karaf
+# Attaching the agent to Karaf
 
 - Copy the Hawkular Java Agent to somewhere within the Fuse distribution
 
