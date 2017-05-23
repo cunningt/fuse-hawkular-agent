@@ -1,0 +1,34 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: example-pod-config.yml
+  namespace: myproject
+data:
+  hawkular-openshift-agent: |
+    endpoints:
+    - type: jolokia
+      collection_interval: 15s
+      protocol: "https"
+      tls:
+        skip_certificate_validation: true
+      port: 8778
+      credentials:
+        username: jolokia
+        password: eOdlZ2IM2SIm9ZgVaRfZM5OEcQGkm4 
+      path: /jolokia/
+      tags:
+        name: ${POD:label[project]}
+      metrics:
+      #- name: java.lang:type=Threading#ThreadCount
+      #  id: the_thread_count
+      #  type: gauge
+      - name: org.apache.camel:name=*,context=*,type=context#ExchangesCompleted
+        type: counter
+        id: bean.{context}.{name}.ExchangesCompleted
+      - name: org.apache.camel:name=*,context=*,type=context#ExchangesFailed
+        type: counter
+        id: bean.{context}.{name}.ExchangesFailed
+      - name: org.apache.camel:name=*,context=*,type=context#ExchangesTotal
+        type: counter
+        id: bean.{context}.{name}.ExchangesTotal
+
