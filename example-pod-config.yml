@@ -19,9 +19,7 @@ data:
       tags:
         name: ${POD:label[project]}
       metrics:
-      #- name: java.lang:type=Threading#ThreadCount
-      #  id: the_thread_count
-      #  type: gauge
+      # Camel Context Metrics
       - name: org.apache.camel:name=*,context=*,type=context#ExchangesCompleted
         type: counter
         id: bean.{context}.{name}.ExchangesCompleted
@@ -31,4 +29,48 @@ data:
       - name: org.apache.camel:name=*,context=*,type=context#ExchangesTotal
         type: counter
         id: bean.{context}.{name}.ExchangesTotal
-
+      - name: org.apache.camel:name=*,context=*,type=context#MinProcessingTime
+        type: counter
+        id: bean.{context}.{name}.MinimumProcessingTime
+      - name: org.apache.camel:name=*,context=*,type=context#MeanProcessingTime
+        type: gauge
+        id: bean.{context}.{name}.MeanProcessingTime
+      - name: org.apache.camel:name=*,context=*,type=context#MaxProcessingTime
+        type: gauge
+        id: bean.{context}.{name}.MaxProcessingTime
+      - name: org.apache.camel:name=*,context=*,type=context#TotalProcessingTime
+        type: gauge
+        id: bean.{context}.{name}.TotalProcessingTime
+      - name: org.apache.camel:name=*,context=*,type=context#LastProcessingTime
+        type: gauge
+        id: bean.{context}.{name}.LastProcessingTime
+      # Camel Processor Metrics
+      - name: org.apache.camel:name=*,context=*,type=processors#ExchangesCompleted
+        type: counter
+        id: bean.{context}.processor.{name}.ExchangesCompleted
+      - name: org.apache.camel:name=*,context=*,type=processors#ExchangesFailed
+        type: counter
+        id: bean.{context}.processor.{name}.ExchangesFailed
+      - name: org.apache.camel:name=*,context=*,type=processors#ExchangesTotal
+        type: counter
+        id: bean.{context}.processor.{name}.ExchangesTotal
+      - name: org.apache.camel:name=*,context=*,type=processors#MinProcessingTime
+        type: counter
+        id: bean.{context}.processor.{name}.MinimumProcessingTime
+      - name: org.apache.camel:name=*,context=*,type=processors#MeanProcessingTime
+        type: gauge
+        id: bean.{context}.processor.{name}.MeanProcessingTime
+      - name: org.apache.camel:name=*,context=*,type=processors#MaxProcessingTime
+        type: gauge
+        id: bean.{context}.processor.{name}.MaxProcessingTime
+      - name: org.apache.camel:name=*,context=*,type=processors#TotalProcessingTime
+        type: gauge
+        id: bean.{context}.processor.{name}.TotalProcessingTime
+      - name: org.apache.camel:name=*,context=*,type=processors#LastProcessingTime
+        type: gauge
+        id: bean.{context}.processor.{name}.LastProcessingTime
+      # Camel Route Metrics
+      - name: org.apache.camel:type=routes,name=*,context=*
+        type: gauge
+        id: bean.{context}.routes.{name}.InflightExchanges
+      
